@@ -1,0 +1,26 @@
+$small: 1.3rem;
+$medium: 2rem;
+$big: 4rem;
+$huge: 6rem;
+
+@use './colors' as colors;
+
+@mixin d-flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-flow: row wrap;
+}
+
+@mixin d-flex-center-column {
+  @include d-flex-center();
+  flex-flow: column nowrap;
+}
+
+.u-padding-medium {
+  padding: $medium !important;
+}
+
+.min-100vh {
+  min-height: 100vh !important;
+}

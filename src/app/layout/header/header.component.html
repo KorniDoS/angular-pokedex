@@ -1,0 +1,13 @@
+<mat-toolbar class="header" color="primary">
+  <button
+    (click)="onToggle()"
+    mat-icon-button
+    class="header__icon-button"
+    aria-label="icon-button with menu icon"
+  >
+    <mat-icon class="header__icon-button__icon">menu</mat-icon>
+  </button>
+  <h1 class="header__title" color="accent" [routerLink]="['/']">
+    Pokedex
+  </h1>
+</mat-toolbar>

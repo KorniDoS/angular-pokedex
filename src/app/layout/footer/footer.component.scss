@@ -1,0 +1,17 @@
+@use "../../scss/colors" as colors;
+
+.footer {
+  background-color: colors.$black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  color: colors.$white;
+
+  &__container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+}

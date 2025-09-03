@@ -1,0 +1,32 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: 1rem;
+
+  &__icon-button {
+    appearance: none;
+    background-color: transparent;
+
+    &__icon {
+      color: #eadac0;
+    }
+  }
+
+  &__title {
+    color: white;
+    margin-right: auto;
+
+    &:hover {
+      cursor: pointer;
+    }
+    
+    &__span {
+      display: none;
+
+      @media only screen and (min-width: 412px) {
+        display: inline;
+      }
+    }
+  }
+}

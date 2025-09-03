@@ -1,0 +1,15 @@
+@use './scss/colors' as colors;
+
+.router-container {
+  padding-right: 0;
+  padding-top: 24px;
+}
+
+.sidenav-container__link {
+  text-decoration: none;
+  color: colors.$accent;
+
+  span {
+    color: colors.$accent;
+  }
+}
