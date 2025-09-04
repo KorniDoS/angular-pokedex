@@ -1,0 +1,33 @@
+<div class="container min-100vh">
+  <h1 class="mb-4">Pokemons</h1>
+
+  <div class="flex gap-2 mb-5">
+    <mat-form-field appearance="outline">
+      <mat-label>Search Pokemon</mat-label>
+      <input matInput placeholder="eg. Bulbasaur" [formControl]="searchControl" />
+    </mat-form-field>
+  </div>
+
+  @if(totalPokemons ){
+  <div class="container mt-5 pb-5">
+    <h2 class="mb-3">{{ totalPokemons }} {{ totalPokemons === 1 ? 'result' : 'results' }}</h2>
+
+    @for(pokemon of pokemons; track pokemon.id){
+    <app-pokemon-list-item [pokemon]="pokemon" [navigateOnClick]="true"></app-pokemon-list-item>
+    }
+
+    <mat-paginator
+      [length]="totalPokemons"
+      [pageSize]="pageSize"
+      [pageSizeOptions]="[10, 20, 50]"
+      (page)="onPageChange($event)"
+      class="mt-4"
+    >
+    </mat-paginator>
+  </div>
+  } @else {
+  <div class="container mt-5">
+    <no-data></no-data>
+  </div>
+  }
+</div>

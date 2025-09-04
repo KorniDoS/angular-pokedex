@@ -1,0 +1,28 @@
+<div
+  class="list-container"
+  [ngStyle]="{ cursor: navigateOnClick ? 'pointer' : 'default' }"
+  (click)="navigateToDetails(pokemon.id)"
+>
+  <mat-card class="mb-4 d-flex list-container__card">
+    <div class="w-100 p-3 d-flex-space-between">
+      <div>
+        <img
+          [src]="
+            'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/' +
+            pokemon.id +
+            '.png'
+          "
+          alt="{{ pokemon.name }}"
+        />
+        <strong>
+          {{ pokemon.name | titlecase }}
+        </strong>
+      </div>
+
+      <div (click)="$event.stopPropagation()" class="d-flex gap-3">
+        <button matButton="filled" class="u-bg-secondary" (click)="addToWishlist()" [disabled]="!canAddPokemonToWishlist">Add to wishlist</button>
+        <button matButton="filled" class="u-bg-primary" (click)="addToCaught()" [disabled]="isPokemonCaught">Catch</button>
+      </div>
+    </div>
+  </mat-card>
+</div>
