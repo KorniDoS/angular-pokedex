@@ -1,7 +1,7 @@
 import { Component, OnInit, signal, ViewChild } from '@angular/core';
-import { RouterModule, RouterOutlet } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { HeaderComponent } from './layout/header/header.component';
-import { MatSidenav, MatSidenavContainer, MatSidenavModule } from '@angular/material/sidenav';
+import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { MatListItem, MatNavList } from '@angular/material/list';
 import { NgStyle, TitleCasePipe } from '@angular/common';
 import { BaseComponent } from './shared/base-component/base-component.component';

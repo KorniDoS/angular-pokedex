@@ -242,3 +242,9 @@ app-root {
     }
   }
 }
+
+app-pokemon-list {
+  .mat-mdc-form-field-subscript-wrapper {
+    display: none !important;
+  }
+}
