@@ -4,22 +4,25 @@
   <div class="flex gap-2 mb-5">
     <mat-form-field appearance="outline">
       <mat-label>Search Pokemon</mat-label>
-      <input matInput placeholder="eg. Bulbasaur" [formControl]="searchControl" />
+      <input
+        matInput
+        #searchControlInput
+        placeholder="eg. Bulbasaur"
+        [formControl]="searchControl"
+      />
     </mat-form-field>
   </div>
 
   @if(pokemons.length){
   <div class="container mt-5 pb-5">
-    <h2 class="mb-3">
-      {{ pokemons.length }} {{ pokemons.length === 1 ? 'result' : 'results' }}
-    </h2>
+    <h2 class="mb-3">{{ pokemons.length }} {{ pokemons.length === 1 ? 'result' : 'results' }}</h2>
 
     @for(pokemon of pokemons; track pokemon.id){
     <app-pokemon-list-item [pokemon]="pokemon" [navigateOnClick]="true"></app-pokemon-list-item>
     }
 
     <mat-paginator
-      [length]="totalPokemons"
+      [length]="searchControlInput.value ? pokemons.length : totalPokemons"
       [pageSize]="pageSize"
       [pageSizeOptions]="[10, 20, 50]"
       (page)="onPageChange($event)"

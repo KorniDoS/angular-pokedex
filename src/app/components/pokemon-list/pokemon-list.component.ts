@@ -1,7 +1,7 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 
 import { ReactiveFormsModule, UntypedFormControl } from '@angular/forms';
-import { debounceTime, distinctUntilChanged, startWith, tap } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, startWith, tap } from 'rxjs';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { PokemonService } from '../../services/pokemon.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -64,6 +64,7 @@ export class PokemonListComponent extends BaseComponent implements OnInit, OnDes
 
   private loadPage(): void {
     const search = this.searchControl.value?.toLowerCase() || '';
+
     this.addSubscription(
       this.pokemonService
         .getAll(this.pageSize, this.currentPage * this.pageSize)
@@ -72,6 +73,12 @@ export class PokemonListComponent extends BaseComponent implements OnInit, OnDes
 
           if (search) {
             filtered = filtered.filter((p) => p.name.toLowerCase().includes(search));
+
+            if (filtered.length === 0) {
+              filtered = this.pokemonService.pokemons
+                .filter((p) => p.name.toLowerCase().includes(search))
+                .slice(0, this.pageSize);
+            }
           }
 
           this.pokemons = filtered;
