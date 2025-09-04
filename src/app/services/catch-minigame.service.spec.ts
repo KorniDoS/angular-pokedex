@@ -1,3 +1,4 @@
+import { provideToastr } from 'ngx-toastr';
 import { CatchMinigameService } from './catch-minigame.service';
 import { PokemonService } from './pokemon.service';
 import { TestBed } from '@angular/core/testing';
@@ -17,6 +18,7 @@ describe('CatchMinigameService', () => {
             pokemons: [mockPokemon],
           } as any,
         },
+        provideToastr(),
       ],
     });
     service = TestBed.inject(CatchMinigameService);

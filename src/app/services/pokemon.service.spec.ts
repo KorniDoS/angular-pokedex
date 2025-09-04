@@ -33,7 +33,7 @@ describe('PokemonService', () => {
         { name: 'bulbasaur', id: 1 },
         { name: 'ivysaur', id: 2 },
       ]);
-      expect(service.pokemons).toEqual([
+      expect(service.allPokemons).toEqual([
         { name: 'bulbasaur', id: 1 },
         { name: 'ivysaur', id: 2 },
       ]);
@@ -44,7 +44,7 @@ describe('PokemonService', () => {
   it('should not populate _pokemons if limit or offset is set', (done) => {
     jest.spyOn(httpClient, 'get').mockReturnValue(of(mockResponse));
     service.getAll(1, 1).subscribe((data) => {
-      expect(service.pokemons).toEqual([]);
+      expect(service.allPokemons).toEqual([]);
       done();
     });
   });

@@ -48,17 +48,18 @@ export class PokemonCaughtListComponent extends BaseComponent implements OnInit 
   }
 
   public async catchRandomPokemon(): Promise<void> {
+    this.loaderService.setLoading(true);
+
     const allIds = this.pokemonService.allPokemonsIds;
 
-    if (!allIds || allIds.length === 0) {
+    if (allIds == null || allIds.length === 0) {
+      this.loaderService.setLoading(false);
       return;
     }
 
-    this.loaderService.setLoading(true);
-
     const randomId = getRandomArrayElement(this.pokemonService.allPokemonsIds) as number;
 
-    let pokemon = this.pokemonService.allPokemons.find((p) => p.id === randomId);
+    const pokemon = this.pokemonService.allPokemons.find((p) => p.id === randomId);
 
     if (!pokemon) {
       this.loaderService.setLoading(false);

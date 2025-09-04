@@ -27,6 +27,8 @@ describe('PokemonCaughtListComponent', () => {
     } as any;
     pokemonService = {
       pokemons: mockCaught,
+      allPokemons: mockCaught,
+      allPokemonsIds: [1],
     } as any;
     pokemonStorageService = {
       removePokemon: jest.fn(),
@@ -51,6 +53,10 @@ describe('PokemonCaughtListComponent', () => {
     });
 
     component = TestBed.inject(PokemonCaughtListComponent);
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
   it('should create', () => {
@@ -90,7 +96,7 @@ describe('PokemonCaughtListComponent', () => {
   });
 
   it('should not add to caughtPokemons if random pokemon not found', () => {
-    Object.defineProperty(pokemonService, 'pokemons', { get: () => [] });
+    Object.defineProperty(pokemonService, 'allPokemons', { get: () => [] });
     component.caughtPokemons = [];
     component.catchRandomPokemon();
     expect(loaderService.setLoading).toHaveBeenCalledWith(false);

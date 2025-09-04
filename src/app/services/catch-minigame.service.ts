@@ -18,7 +18,7 @@ export class CatchMinigameService {
   public tryCatchRandomPokemon(): CatchMinigameResult | null {
     const allIds = this.pokemonService.allPokemonsIds;
 
-    if (!allIds || allIds.length === 0) {
+    if (allIds == null || allIds.length === 0) {
       return null;
     }
 

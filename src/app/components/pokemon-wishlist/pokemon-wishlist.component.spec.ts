@@ -25,6 +25,7 @@ describe('PokemonWishlistComponent', () => {
     } as any;
     pokemonService = {
       pokemons: [mockPokemon],
+      allPokemons: [mockPokemon],
     } as any;
 
     TestBed.configureTestingModule({

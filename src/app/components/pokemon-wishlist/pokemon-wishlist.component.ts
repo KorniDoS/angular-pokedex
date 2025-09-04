@@ -34,15 +34,13 @@ export class PokemonWishlistComponent implements OnInit {
   public moveToCaught(id: number): void {
     const pokemon = this.pokemonService.allPokemons.find((p) => p.id === id);
 
-    if (!pokemon) {
-      return;
+    if (pokemon) {
+      this.pokemonStorageService.movePokemon(
+        LocalStorageKeys.WISHLIST_POKEMONS,
+        LocalStorageKeys.CAUGHT_POKEMONS,
+        pokemon
+      );
     }
-
-    this.pokemonStorageService.movePokemon(
-      LocalStorageKeys.WISHLIST_POKEMONS,
-      LocalStorageKeys.CAUGHT_POKEMONS,
-      pokemon
-    );
 
     this.removeFromWishlist(id);
   }

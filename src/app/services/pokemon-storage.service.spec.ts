@@ -3,6 +3,7 @@ import { LocalStorageService } from './localstorage.service';
 import { LocalStorageKeys } from '../enums/local-storage-keys.enum';
 import { PokemonListItem } from '../interfaces/pokemon-list-item.interface';
 import { TestBed } from '@angular/core/testing';
+import { provideToastr } from 'ngx-toastr';
 
 describe('PokemonStorageService', () => {
   let service: PokemonStorageService;
@@ -23,6 +24,7 @@ describe('PokemonStorageService', () => {
             removeItem: jest.fn(),
           },
         },
+        provideToastr(),
       ],
     });
     service = TestBed.inject(PokemonStorageService);
