@@ -38,11 +38,18 @@ export class PokemonStorageService {
 
   public removePokemon(key: LocalStorageKeys, id: number): PokemonListItem[] {
     let list = this.getList(key);
+
+    const initialLength = list.length;
+
     list = list.filter((p) => p.id !== id);
+
     this.saveList(key, list);
-    this.snackBarService.warning(
-      `Pokemon with id ${id} removed from ${this.getPrettyGroupNameBasedOnKey(key)}`
-    );
+
+    if (list.length < initialLength) {
+      this.snackBarService.warning(
+        `Pokemon with id ${id} removed from ${this.getPrettyGroupNameBasedOnKey(key)}`
+      );
+    }
     return list;
   }
 
