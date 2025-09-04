@@ -14,8 +14,8 @@ export class GenericPokemonListComponent {
   @Input() public pokemons: PokemonListItem[] = [];
   @Input() public showCatchButton: boolean = true;
 
-  @Output() private remove: EventEmitter<number> = new EventEmitter<number>();
-  @Output() private move: EventEmitter<number> = new EventEmitter<number>();
+  @Output() private readonly remove: EventEmitter<number> = new EventEmitter<number>();
+  @Output() private readonly move: EventEmitter<number> = new EventEmitter<number>();
 
   public movePokemon(pokemonId: number): void {
     if (!this.showCatchButton) {

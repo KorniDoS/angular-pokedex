@@ -20,8 +20,22 @@
       </div>
 
       <div (click)="$event.stopPropagation()" class="d-flex gap-3">
-        <button matButton="filled" class="u-bg-secondary" (click)="addToWishlist()" [disabled]="!canAddPokemonToWishlist">Add to wishlist</button>
-        <button matButton="filled" class="u-bg-primary" (click)="addToCaught()" [disabled]="isPokemonCaught">Catch</button>
+        <button
+          matButton="filled"
+          class="u-bg-secondary"
+          (click)="addToWishlist()"
+          [disabled]="!canAddPokemonToWishlist"
+        >
+          Add to wishlist
+        </button>
+        <button
+          matButton="filled"
+          class="u-bg-primary"
+          (click)="addToCaught()"
+          [disabled]="isPokemonCaught"
+        >
+          Catch
+        </button>
       </div>
     </div>
   </mat-card>

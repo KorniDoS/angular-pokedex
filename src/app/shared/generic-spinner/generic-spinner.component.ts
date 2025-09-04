@@ -10,5 +10,5 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   styleUrls: ['./generic-spinner.component.scss'],
 })
 export class GenericSpinnerComponent {
-  @Input({ required: true }) spinnerConfig?: GenericSpinnerConfig;
+  @Input({ required: true }) public spinnerConfig?: GenericSpinnerConfig;
 }

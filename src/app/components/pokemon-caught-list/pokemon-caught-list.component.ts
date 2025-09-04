@@ -7,33 +7,50 @@ import { PokemonService } from '../../services/pokemon.service';
 import { POKEMONS_TOTAL_COUNT } from '../../constants/pokemons-total-count.constant';
 import { PokemonListItem } from '../../interfaces/pokemon-list-item.interface';
 import { MatButtonModule } from '@angular/material/button';
-import { SnackbarService } from '../../services/snackbar.service';
+import { PokemonStorageService } from '../../services/pokemon-storage.service';
 import { LoaderService } from '../../shared/loader/loader.service';
+import { BaseComponent } from '../../shared/base-component/base-component.component';
+import { EventBusService } from '../../services/event-bus.service';
+import { EventBusEnum } from '../../enums/event-bus.enum';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-pokemon-caught-list',
   imports: [GenericPokemonListComponent, MatButtonModule],
   templateUrl: './pokemon-caught-list.component.html',
-  styleUrls: ['./pokemon-caught-list.component.scss'],
 })
-export class PokemonCaughtListComponent implements OnInit {
+export class PokemonCaughtListComponent extends BaseComponent implements OnInit {
   public caughtPokemons: PokemonListItem[] = [];
 
   public constructor(
     private readonly localStorageService: LocalStorageService,
     private readonly pokemonService: PokemonService,
+    private readonly pokemonStorageService: PokemonStorageService,
     private readonly loaderService: LoaderService,
-    private readonly snackbarService: SnackbarService
-  ) {}
+    private readonly eventBusService: EventBusService
+  ) {
+    super();
+  }
 
   public ngOnInit(): void {
     this.caughtPokemons = this.localStorageService.getItem(LocalStorageKeys.CAUGHT_POKEMONS) ?? [];
+
+    this.addSubscription(
+      this.eventBusService
+        .getData(EventBusEnum.CATCH_MINIGAME_POKEMON)
+        .pipe(filter((data) => !!data.payload))
+        .subscribe((data) => {
+          const pokemon = data.payload as PokemonListItem;
+          this.addToCaughtList(pokemon);
+          this.caughtPokemons.push(pokemon);
+        })
+    );
   }
 
   public catchRandomPokemon(): void {
     this.loaderService.setLoading(true);
     const randomId = Math.floor(Math.random() * POKEMONS_TOTAL_COUNT) + 1;
-    const pokemon = this.pokemonService.pokemons?.find((p) => p.id === randomId);
+    const pokemon = this.pokemonService.pokemons.find((p) => p.id === randomId);
 
     if (!pokemon) {
       this.loaderService.setLoading(false);
@@ -41,7 +58,7 @@ export class PokemonCaughtListComponent implements OnInit {
     }
 
     this.caughtPokemons.push(pokemon);
-    this.localStorageService.setItem(LocalStorageKeys.CAUGHT_POKEMONS, this.caughtPokemons);
+    this.addToCaughtList(pokemon);
     this.removeFromWishlist(pokemon.id);
 
     setTimeout(() => {
@@ -50,20 +67,17 @@ export class PokemonCaughtListComponent implements OnInit {
   }
 
   public removeFromCaughtList(pokemonId: number): void {
-    this.caughtPokemons = this.caughtPokemons.filter((p) => p.id !== pokemonId);
-    this.localStorageService.setItem(LocalStorageKeys.CAUGHT_POKEMONS, this.caughtPokemons);
+    this.caughtPokemons = this.pokemonStorageService.removePokemon(
+      LocalStorageKeys.CAUGHT_POKEMONS,
+      pokemonId
+    );
   }
 
-  public removeFromWishlist(id: number): void {
-    let wishlist: PokemonListItem[] =
-      this.localStorageService.getItem(LocalStorageKeys.WISHLIST_POKEMONS) ?? [];
+  private removeFromWishlist(id: number): void {
+    this.pokemonStorageService.removePokemon(LocalStorageKeys.WISHLIST_POKEMONS, id);
+  }
 
-    if (!wishlist.find((pokemon) => pokemon.id === id)) {
-      return;
-    }
-
-    wishlist = wishlist.filter((p) => p.id !== id);
-    this.localStorageService.setItem(LocalStorageKeys.WISHLIST_POKEMONS, wishlist);
-    this.snackbarService.warning(`Pokemon #${id} removed from wishlist`);
+  private addToCaughtList(pokemon: PokemonListItem): void {
+    this.pokemonStorageService.addPokemon(LocalStorageKeys.CAUGHT_POKEMONS, pokemon);
   }
 }

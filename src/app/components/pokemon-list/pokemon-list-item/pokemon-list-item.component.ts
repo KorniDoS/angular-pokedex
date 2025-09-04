@@ -5,8 +5,8 @@ import { NgStyle, TitleCasePipe } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { LocalStorageService } from '../../../services/localstorage.service';
 import { LocalStorageKeys } from '../../../enums/local-storage-keys.enum';
-import { SnackbarService } from '../../../services/snackbar.service';
 import { PokemonListItem } from '../../../interfaces/pokemon-list-item.interface';
+import { PokemonStorageService } from '../../../services/pokemon-storage.service';
 
 @Component({
   selector: 'app-pokemon-list-item',
@@ -20,7 +20,7 @@ export class PokemonListItemComponent {
   public constructor(
     private readonly router: Router,
     private readonly localStorageService: LocalStorageService,
-    private readonly snackbarService: SnackbarService
+    private readonly pokemonStorageService: PokemonStorageService
   ) {}
 
   public navigateToDetails(id: number): void {
@@ -31,58 +31,17 @@ export class PokemonListItemComponent {
   }
 
   public addToWishlist(): void {
-    const wishlist: PokemonListItem[] =
-      this.localStorageService.getItem(LocalStorageKeys.WISHLIST_POKEMONS) ?? [];
-
-    if (wishlist.find((pokemon) => pokemon.id === this.pokemon.id)) {
-      this.snackbarService.info('Pokemon is already in wishlist');
-      return;
-    }
-
-    wishlist.push(this.pokemon);
-    this.localStorageService.setItem(LocalStorageKeys.WISHLIST_POKEMONS, wishlist);
-
-    this.snackbarService.info(`Pokemon ${this.pokemon.name}#${this.pokemon.id} added to wishlist`);
+    this.pokemonStorageService.addPokemon(LocalStorageKeys.WISHLIST_POKEMONS, this.pokemon);
   }
 
   public addToCaught(): void {
-    const caught: PokemonListItem[] =
-      this.localStorageService.getItem(LocalStorageKeys.CAUGHT_POKEMONS) ?? [];
-
-    if (caught.find((pokemon) => pokemon.id === this.pokemon.id)) {
-      this.snackbarService.info('Pokemon is already caught');
-      return;
-    }
-
-    this.storeCaughtPokemonInStorage(this.pokemon);
-    this.removeCaughtPokemonFromWishlist();
-  }
-
-  private storeCaughtPokemonInStorage(pokemon: PokemonListItem): void {
-    const caught: PokemonListItem[] =
-      this.localStorageService.getItem(LocalStorageKeys.CAUGHT_POKEMONS) ?? [];
-
-    caught.push(pokemon);
-
-    this.localStorageService.setItem(LocalStorageKeys.CAUGHT_POKEMONS, caught);
+    this.pokemonStorageService.addPokemon(LocalStorageKeys.CAUGHT_POKEMONS, this.pokemon);
 
     this.removeCaughtPokemonFromWishlist();
-
-    this.snackbarService.success(`Pokemon ${pokemon.name}#${pokemon.id} caught successfully`);
   }
 
   private removeCaughtPokemonFromWishlist(): void {
-    const wishlist: PokemonListItem[] =
-      this.localStorageService.getItem(LocalStorageKeys.WISHLIST_POKEMONS) ?? [];
-
-    const pokemonWishlistIndex = wishlist.findIndex((pokemon) => pokemon.id === this.pokemon.id);
-
-    if (pokemonWishlistIndex === -1) {
-      return;
-    }
-
-    wishlist.splice(pokemonWishlistIndex, 1);
-    this.localStorageService.setItem(LocalStorageKeys.WISHLIST_POKEMONS, wishlist);
+    this.pokemonStorageService.removePokemon(LocalStorageKeys.WISHLIST_POKEMONS, this.pokemon.id);
   }
 
   public get isPokemonCaught(): boolean {

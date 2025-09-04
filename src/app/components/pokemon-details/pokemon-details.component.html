@@ -27,7 +27,7 @@
         </p>
       </div>
 
-      <h3 class="mt45 font-bold">Base Stats</h3>
+      <h3 class="mt-4"><strong>Base Stats</strong></h3>
       @for (s of pokemon.stats; track $index) {
       <div class="d-flex mb-2">
         <strong>{{ s.stat.name | uppercase }}</strong>
@@ -43,7 +43,7 @@
       </div>
       }
 
-      <h3 class="mt-5 font-bold">Moves</h3>
+      <h3 class="mt-5"><strong>Moves</strong></h3>
       <mat-chip-listbox>
         @for (m of pokemon.moves | slice:0:10; track $index) {
         <mat-chip>

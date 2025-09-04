@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, ViewChild } from '@angular/core';
+import { Component, HostListener, OnInit, signal, ViewChild } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { HeaderComponent } from './layout/header/header.component';
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
@@ -12,6 +12,10 @@ import { ToggleSidenavService } from './services/toggle-sidenav.service';
 import { MatIconModule } from '@angular/material/icon';
 import { LoaderComponent } from './shared/loader/loader.component';
 import { FooterComponent } from './layout/footer/footer.component';
+import { PokemonService } from './services/pokemon.service';
+import { first } from 'rxjs';
+import { LocalStorageService } from './services/localstorage.service';
+import { LocalStorageKeys } from './enums/local-storage-keys.enum';
 
 @Component({
   selector: 'app-root',
@@ -31,6 +35,11 @@ import { FooterComponent } from './layout/footer/footer.component';
   styleUrl: './app.scss',
 })
 export class App extends BaseComponent implements OnInit {
+  @HostListener('window:beforeunload')
+  public setRefreshFlag(): void {
+    this.localStorageService.setItem(LocalStorageKeys.REFRESH, true);
+  }
+
   protected readonly title = signal('pokedex');
   public showSidenav: boolean = false;
   public isSmall: boolean = false;
@@ -39,13 +48,20 @@ export class App extends BaseComponent implements OnInit {
   @ViewChild('sidenav') public sidenav!: MatSidenav;
 
   public constructor(
-    private toggleSidenavService: ToggleSidenavService,
-    private breakpointObs: BreakpointObserver
+    private readonly toggleSidenavService: ToggleSidenavService,
+    private readonly breakpointObs: BreakpointObserver,
+    private readonly localStorageService: LocalStorageService,
+    private readonly pokemonService: PokemonService
   ) {
     super();
   }
 
   public ngOnInit(): void {
+    if (this.localStorageService.getItem(LocalStorageKeys.REFRESH)) {
+      this.pokemonService.getAll().pipe(first()).subscribe();
+      this.localStorageService.removeItem(LocalStorageKeys.REFRESH);
+    }
+
     this.addSubscription(
       this.toggleSidenavService.toggled.subscribe((res: boolean) => {
         this.showSidenav = res;

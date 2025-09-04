@@ -7,7 +7,11 @@
   >
     <mat-icon class="header__icon-button__icon">menu</mat-icon>
   </button>
-  <h1 class="header__title" color="accent" [routerLink]="['/']">
-    Pokedex
-  </h1>
+  <div class="d-flex-space-between w-100">
+    <h1 class="header__title" color="accent" [routerLink]="['/']">Pokedex</h1>
+
+    <div (mousedown)="$event.stopPropagation(); playMinigame()">
+      <button matButton="filled">Throw Pokeball</button>
+    </div>
+  </div>
 </mat-toolbar>

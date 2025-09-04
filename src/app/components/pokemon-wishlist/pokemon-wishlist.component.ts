@@ -3,41 +3,44 @@ import { GenericPokemonListComponent } from '../../shared/generic-pokemon-list/g
 import { LocalStorageKeys } from '../../enums/local-storage-keys.enum';
 import { LocalStorageService } from '../../services/localstorage.service';
 import { PokemonListItem } from '../../interfaces/pokemon-list-item.interface';
-import { SnackbarService } from '../../services/snackbar.service';
+import { PokemonStorageService } from '../../services/pokemon-storage.service';
+import { PokemonService } from '../../services/pokemon.service';
 
 @Component({
   selector: 'app-pokemon-wishlist',
   imports: [GenericPokemonListComponent],
   templateUrl: './pokemon-wishlist.component.html',
-  styleUrls: ['./pokemon-wishlist.component.scss'],
 })
 export class PokemonWishlistComponent implements OnInit {
   public wishlist: PokemonListItem[] = [];
 
-  public constructor(private readonly localStorageService: LocalStorageService, private readonly snackbarService: SnackbarService) {}
+  public constructor(
+    private readonly localStorageService: LocalStorageService,
+    private readonly pokemonStorageService: PokemonStorageService,
+    private readonly pokemonService: PokemonService
+  ) {}
 
   public ngOnInit(): void {
     this.wishlist = this.localStorageService.getItem(LocalStorageKeys.WISHLIST_POKEMONS) ?? [];
   }
 
   public removeFromWishlist(id: number): void {
-    this.wishlist = this.wishlist.filter((p) => p.id !== id);
-    this.localStorageService.setItem(LocalStorageKeys.WISHLIST_POKEMONS, this.wishlist);
-    this.snackbarService.warning(`Pokemon #${id} removed from wishlist`);
+    this.wishlist = this.pokemonStorageService.removePokemon(
+      LocalStorageKeys.WISHLIST_POKEMONS,
+      id
+    );
   }
 
   public moveToCaught(id: number): void {
-    const pokemon = this.wishlist.find((p) => p.id === id);
+    const pokemon = this.pokemonService.pokemons.find((p) => p.id === id);
 
-    if (!pokemon) {
-      return;
+    if (pokemon) {
+      this.pokemonStorageService.movePokemon(
+        LocalStorageKeys.WISHLIST_POKEMONS,
+        LocalStorageKeys.CAUGHT_POKEMONS,
+        pokemon
+      );
     }
-
-    const caughtPokemons = this.localStorageService.getItem(LocalStorageKeys.CAUGHT_POKEMONS) ?? [];
-    caughtPokemons.push(pokemon);
-    this.localStorageService.setItem(LocalStorageKeys.CAUGHT_POKEMONS, caughtPokemons);
-
-    this.snackbarService.success(`Pokemon ${pokemon.name}#${pokemon.id} moved to caught list`);
 
     this.removeFromWishlist(id);
   }

@@ -1,0 +1,29 @@
+<h2 mat-dialog-title>Pokemon Encounter</h2>
+
+<mat-dialog-content class="content d-flex-column">
+  <img
+    [src]="
+      'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/' +
+      data.pokemon.id +
+      '.png'
+    "
+    alt="{{ data.pokemon.name }}"
+  />
+
+  @if(data.caught){
+  <span
+    >You caught <strong>{{ data.pokemon.name | titlecase }} #{{ data.pokemon.id }}</strong
+    >!</span
+  >
+
+  } @else {
+  <span
+    >You missed <strong>{{ data.pokemon.name | titlecase }} #{{ data.pokemon.id }}</strong
+    >!</span
+  >
+  }
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Close</button>
+</mat-dialog-actions>

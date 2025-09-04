@@ -1,0 +1,3 @@
+export enum EventBusEnum {
+    CATCH_MINIGAME_POKEMON = 'CATCH_MINIGAME_POKEMON'
+}

@@ -24,14 +24,13 @@ import { PokemonListItem } from '../../interfaces/pokemon-list-item.interface';
     NoDataComponent,
     PokemonListItemComponent,
   ],
-  styleUrls: ['./pokemon-list.component.scss'],
 })
 export class PokemonListComponent extends BaseComponent implements OnInit, OnDestroy {
   public pokemons: PokemonListItem[] = [];
   public searchControl: UntypedFormControl = new UntypedFormControl('');
-  public pageSize = 20;
-  public currentPage = 0;
-  public totalPokemons = 0;
+  public pageSize: number = 20;
+  public currentPage: number = 0;
+  public totalPokemons: number = 0;
 
   public constructor(private readonly pokemonService: PokemonService) {
     super();
