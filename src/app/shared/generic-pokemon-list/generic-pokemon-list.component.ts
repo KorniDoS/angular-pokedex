@@ -8,7 +8,7 @@ import { TitleCasePipe } from '@angular/common';
 @Component({
   selector: 'app-generic-pokemon-list',
   templateUrl: './generic-pokemon-list.component.html',
-  imports: [MatCardModule, NoDataComponent, MatButtonModule, TitleCasePipe]
+  imports: [MatCardModule, NoDataComponent, MatButtonModule, TitleCasePipe],
 })
 export class GenericPokemonListComponent {
   @Input() public pokemons: PokemonListItem[] = [];

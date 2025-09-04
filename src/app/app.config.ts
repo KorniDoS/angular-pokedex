@@ -9,6 +9,7 @@ import { routes } from './app.routes';
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { provideToastr } from 'ngx-toastr';
 import { LoadingHttpInterceptor } from './interceptors/loading.interceptor';
+import { provideAnimations } from '@angular/platform-browser/animations';
 import { HttpErrorInterceptor } from './interceptors/http-error.interceptor';
 
 export const appConfig: ApplicationConfig = {
@@ -23,6 +24,8 @@ export const appConfig: ApplicationConfig = {
     ),
     provideHttpClient(withInterceptorsFromDi()),
     provideToastr(),
+    //! fixes ngx-toaster animation error
+    provideAnimations(),
     {
       provide: HTTP_INTERCEPTORS,
       useClass: LoadingHttpInterceptor,

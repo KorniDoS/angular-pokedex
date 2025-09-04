@@ -26,8 +26,10 @@ export class CatchMinigameService {
     const success = Math.random() < 0.5;
     if (success) {
       this.storage.addPokemon(LocalStorageKeys.CAUGHT_POKEMONS, pokemon);
-      console.log('s-a trimis');
-      this.eventBusService.sendData({type: EventBusEnum.CATCH_MINIGAME_POKEMON, payload: pokemon});
+      this.eventBusService.sendData({
+        type: EventBusEnum.CATCH_MINIGAME_POKEMON,
+        payload: pokemon,
+      });
     }
 
     return { pokemon, caught: success };
