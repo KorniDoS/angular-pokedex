@@ -8,9 +8,11 @@
     </mat-form-field>
   </div>
 
-  @if(totalPokemons ){
+  @if(pokemons.length){
   <div class="container mt-5 pb-5">
-    <h2 class="mb-3">{{ totalPokemons }} {{ totalPokemons === 1 ? 'result' : 'results' }}</h2>
+    <h2 class="mb-3">
+      {{ pokemons.length }} {{ pokemons.length === 1 ? 'result' : 'results' }}
+    </h2>
 
     @for(pokemon of pokemons; track pokemon.id){
     <app-pokemon-list-item [pokemon]="pokemon" [navigateOnClick]="true"></app-pokemon-list-item>

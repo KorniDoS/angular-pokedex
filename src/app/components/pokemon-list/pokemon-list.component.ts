@@ -11,6 +11,7 @@ import { NoDataComponent } from '../../shared/no-data-component/no-data.componen
 import { PokemonListItemComponent } from './pokemon-list-item/pokemon-list-item.component';
 import { BaseComponent } from '../../shared/base-component/base-component.component';
 import { PokemonListItem } from '../../interfaces/pokemon-list-item.interface';
+import { POKEMONS_TOTAL_COUNT } from '../../constants/pokemons-total-count.constant';
 
 @Component({
   selector: 'app-pokemon-list',
@@ -30,16 +31,15 @@ export class PokemonListComponent extends BaseComponent implements OnInit, OnDes
   public searchControl: UntypedFormControl = new UntypedFormControl('');
   public pageSize: number = 20;
   public currentPage: number = 0;
-  public totalPokemons: number = 0;
+
+  public readonly totalPokemons = POKEMONS_TOTAL_COUNT;
 
   public constructor(private readonly pokemonService: PokemonService) {
     super();
   }
 
   public ngOnInit(): void {
-    this.addSubscription(
-      this.pokemonService.getAll().subscribe(this.updateDisplayedPokemons.bind(this))
-    );
+    this.loadPage();
 
     this.addSubscription(
       this.searchControl.valueChanges
@@ -49,7 +49,7 @@ export class PokemonListComponent extends BaseComponent implements OnInit, OnDes
           startWith(''),
           tap(() => {
             this.currentPage = 0;
-            this.updateDisplayedPokemons();
+            this.loadPage();
           })
         )
         .subscribe()
@@ -59,26 +59,23 @@ export class PokemonListComponent extends BaseComponent implements OnInit, OnDes
   public onPageChange(event: PageEvent): void {
     this.pageSize = event.pageSize;
     this.currentPage = event.pageIndex;
-
-    this.updateDisplayedPokemons();
+    this.loadPage();
   }
 
-  private updateDisplayedPokemons(): void {
+  private loadPage(): void {
     const search = this.searchControl.value?.toLowerCase() || '';
+    this.addSubscription(
+      this.pokemonService
+        .getAll(this.pageSize, this.currentPage * this.pageSize)
+        .subscribe((data) => {
+          let filtered = data;
 
-    let filtered = this.allPokemons;
+          if (search) {
+            filtered = filtered.filter((p) => p.name.toLowerCase().includes(search));
+          }
 
-    if (search) {
-      filtered = filtered.filter((p) => p.name.toLowerCase().includes(search));
-    }
-
-    this.totalPokemons = filtered.length;
-    const start = this.currentPage * this.pageSize;
-    const end = start + this.pageSize;
-    this.pokemons = filtered.slice(start, end);
-  }
-
-  public get allPokemons(): PokemonListItem[] {
-    return this.pokemonService.pokemons;
+          this.pokemons = filtered;
+        })
+    );
   }
 }
