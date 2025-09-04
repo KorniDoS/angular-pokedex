@@ -1,0 +1,1 @@
+export const POKEMONS_TOTAL_COUNT = 1302;
