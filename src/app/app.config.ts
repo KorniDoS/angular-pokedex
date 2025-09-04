@@ -23,7 +23,7 @@ export const appConfig: ApplicationConfig = {
       })
     ),
     provideHttpClient(withInterceptorsFromDi()),
-    provideToastr(),
+    provideToastr({ positionClass: 'toast-bottom-left' }),
     //! fixes ngx-toaster animation error
     provideAnimations(),
     {

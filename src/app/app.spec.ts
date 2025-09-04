@@ -5,7 +5,6 @@ import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { ToggleSidenavService } from './services/toggle-sidenav.service';
 import { LocalStorageService } from './services/localstorage.service';
 import { PokemonService } from './services/pokemon.service';
-import { LocalStorageKeys } from './enums/local-storage-keys.enum';
 
 describe('AppComponent', () => {
   let component: App;
@@ -64,14 +63,13 @@ describe('AppComponent', () => {
   });
 
   describe('ngOnInit', () => {
-    it('should fetch pokemons if refresh flag is set', () => {
+    it('should fetch pokemons ', () => {
       jest.spyOn(localStorageService, 'getItem').mockReturnValue(true);
       jest.spyOn(pokemonService, 'getAll').mockReturnValue(of([]));
 
       component.ngOnInit();
 
-      expect(pokemonService.getAll).toHaveBeenCalled();
-      expect(localStorageService.removeItem).toHaveBeenCalledWith(LocalStorageKeys.REFRESH);
+      expect(pokemonService.getAll).toHaveBeenCalledTimes(1);
     });
 
     it('should subscribe to ToggleSidenavService', () => {
@@ -89,13 +87,6 @@ describe('AppComponent', () => {
 
       expect(component.isSmall).toBe(true);
       expect(component.showSidenav).toBe(false);
-    });
-  });
-
-  describe('setRefreshFlag', () => {
-    it('should set refresh flag in localStorage', () => {
-      component.setRefreshFlag();
-      expect(localStorageService.setItem).toHaveBeenCalledWith(LocalStorageKeys.REFRESH, true);
     });
   });
 });

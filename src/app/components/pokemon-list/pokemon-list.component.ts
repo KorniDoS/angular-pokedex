@@ -75,7 +75,7 @@ export class PokemonListComponent extends BaseComponent implements OnInit, OnDes
             filtered = filtered.filter((p) => p.name.toLowerCase().includes(search));
 
             if (filtered.length === 0) {
-              filtered = this.pokemonService.pokemons
+              filtered = this.pokemonService.allPokemons
                 .filter((p) => p.name.toLowerCase().includes(search))
                 .slice(0, this.pageSize);
             }

@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { PokemonService } from './pokemon.service';
 import { PokemonStorageService } from './pokemon-storage.service';
 import { LocalStorageKeys } from '../enums/local-storage-keys.enum';
-import { POKEMONS_TOTAL_COUNT } from '../constants/pokemons-total-count.constant';
 import { CatchMinigameResult } from '../interfaces/catch-minigame-result.interface';
 import { EventBusService } from './event-bus.service';
 import { EventBusEnum } from '../enums/event-bus.enum';
+import { getRandomArrayElement } from '../utils/random.util';
 
 @Injectable({ providedIn: 'root' })
 export class CatchMinigameService {
@@ -16,16 +16,29 @@ export class CatchMinigameService {
   ) {}
 
   public tryCatchRandomPokemon(): CatchMinigameResult | null {
-    const randomId = Math.floor(Math.random() * POKEMONS_TOTAL_COUNT) + 1;
-    const pokemon = this.pokemonService.pokemons.find((p) => p.id === randomId);
+    const allIds = this.pokemonService.allPokemonsIds;
+
+    if (!allIds || allIds.length === 0) {
+      return null;
+    }
+
+    const randomId = getRandomArrayElement(allIds) as number;
+
+    if (randomId == null) {
+      return null;
+    }
+
+    const pokemon = this.pokemonService.allPokemons.find((p) => p.id === randomId);
 
     if (!pokemon) {
       return null;
     }
 
     const success = Math.random() < 0.5;
+
     if (success) {
       this.storage.addPokemon(LocalStorageKeys.CAUGHT_POKEMONS, pokemon);
+
       this.eventBusService.sendData({
         type: EventBusEnum.CATCH_MINIGAME_POKEMON,
         payload: pokemon,

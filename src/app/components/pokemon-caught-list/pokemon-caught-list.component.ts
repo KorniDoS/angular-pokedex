@@ -4,7 +4,6 @@ import { GenericPokemonListComponent } from '../../shared/generic-pokemon-list/g
 import { LocalStorageService } from '../../services/localstorage.service';
 import { LocalStorageKeys } from '../../enums/local-storage-keys.enum';
 import { PokemonService } from '../../services/pokemon.service';
-import { POKEMONS_TOTAL_COUNT } from '../../constants/pokemons-total-count.constant';
 import { PokemonListItem } from '../../interfaces/pokemon-list-item.interface';
 import { MatButtonModule } from '@angular/material/button';
 import { PokemonStorageService } from '../../services/pokemon-storage.service';
@@ -13,6 +12,7 @@ import { BaseComponent } from '../../shared/base-component/base-component.compon
 import { EventBusService } from '../../services/event-bus.service';
 import { EventBusEnum } from '../../enums/event-bus.enum';
 import { filter } from 'rxjs';
+import { getRandomArrayElement } from '../../utils/random.util';
 
 @Component({
   selector: 'app-pokemon-caught-list',
@@ -47,10 +47,18 @@ export class PokemonCaughtListComponent extends BaseComponent implements OnInit 
     );
   }
 
-  public catchRandomPokemon(): void {
+  public async catchRandomPokemon(): Promise<void> {
+    const allIds = this.pokemonService.allPokemonsIds;
+
+    if (!allIds || allIds.length === 0) {
+      return;
+    }
+
     this.loaderService.setLoading(true);
-    const randomId = Math.floor(Math.random() * POKEMONS_TOTAL_COUNT) + 1;
-    const pokemon = this.pokemonService.pokemons.find((p) => p.id === randomId);
+
+    const randomId = getRandomArrayElement(this.pokemonService.allPokemonsIds) as number;
+
+    let pokemon = this.pokemonService.allPokemons.find((p) => p.id === randomId);
 
     if (!pokemon) {
       this.loaderService.setLoading(false);

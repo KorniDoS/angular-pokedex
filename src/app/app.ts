@@ -35,11 +35,6 @@ import { LocalStorageKeys } from './enums/local-storage-keys.enum';
   styleUrl: './app.scss',
 })
 export class App extends BaseComponent implements OnInit {
-  @HostListener('window:beforeunload')
-  public setRefreshFlag(): void {
-    this.localStorageService.setItem(LocalStorageKeys.REFRESH, true);
-  }
-
   protected readonly title = signal('pokedex');
   public showSidenav: boolean = false;
   public isSmall: boolean = false;
@@ -57,10 +52,7 @@ export class App extends BaseComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    if (this.localStorageService.getItem(LocalStorageKeys.REFRESH)) {
-      this.pokemonService.getAll().pipe(first()).subscribe();
-      this.localStorageService.removeItem(LocalStorageKeys.REFRESH);
-    }
+    this.pokemonService.getAll().pipe(first()).subscribe();
 
     this.addSubscription(
       this.toggleSidenavService.toggled.subscribe((res: boolean) => {

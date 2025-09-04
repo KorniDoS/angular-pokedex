@@ -11,10 +11,18 @@ import { Pokemon } from '../interfaces/pokemon.interface';
 export class PokemonService {
   private baseUrl = 'https://pokeapi.co/api/v2';
 
-  private _pokemons: PokemonListItem[] = [];
+  private _allPokemons: PokemonListItem[] = [];
 
-  public get pokemons(): PokemonListItem[] {
-    return [...this._pokemons];
+  public get allPokemons(): PokemonListItem[] {
+    return [...this._allPokemons];
+  }
+
+  private set allPokemons(pokemons: PokemonListItem[]) {
+    this._allPokemons = pokemons;
+  }
+
+  public get allPokemonsIds(): number[] {
+    return this.allPokemons.map((p) => p.id);
   }
 
   public constructor(private http: HttpClient) {}
@@ -43,7 +51,7 @@ export class PokemonService {
             return;
           }
 
-          this._pokemons = data;
+          this.allPokemons = data;
         }),
         catchError(() => of([]))
       );
