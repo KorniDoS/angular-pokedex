@@ -1,3 +1,7 @@
+# Live link
+
+[Link](https://rainbow-gumption-78d213.netlify.app/)
+
 # Pokedex
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.2.1.
