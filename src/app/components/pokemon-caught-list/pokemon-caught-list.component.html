@@ -1,0 +1,9 @@
+<div class="container">
+  <h1 class="mb-4">Caught Pokemons</h1>
+  <button class="mb-4" matButton="filled" (click)="catchRandomPokemon()">Catch random Pokemon</button>
+  <app-generic-pokemon-list
+    [pokemons]="caughtPokemons"
+    [showCatchButton]="false"
+    (remove)="removeFromCaughtList($event)"
+  ></app-generic-pokemon-list>
+</div>

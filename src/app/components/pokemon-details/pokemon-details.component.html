@@ -1,0 +1,57 @@
+@if (pokemon$ | async; as pokemon) {
+<div class="container p-4">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        <strong>{{ pokemon.name | titlecase }}</strong> (#{{ pokemon.id }})
+      </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="d-flex mb-4">
+        <img [src]="pokemon.sprites.front_default" [alt]="pokemon.name" class="pokemon-image" />
+      </div>
+
+      <div class="mb-4">
+        <p><strong>Height:</strong> {{ pokemon.height / 10 }} m</p>
+        <p><strong>Weight:</strong> {{ pokemon.weight / 10 }} kg</p>
+        <p>
+          <strong>Types:</strong>
+          @for (t of pokemon.types; let i = $index; track $index) {
+          {{ t.type.name }} @if (i < pokemon.types.length - 1) {, } }
+        </p>
+        <p>
+          <strong>Abilities:</strong>
+          @for (a of pokemon.abilities; let i = $index; track $index) {
+          {{ a.ability.name }} @if (i < pokemon.abilities.length - 1) {, } }
+        </p>
+      </div>
+
+      <h3 class="mt45 font-bold">Base Stats</h3>
+      @for (s of pokemon.stats; track $index) {
+      <div class="d-flex mb-2">
+        <strong>{{ s.stat.name | uppercase }}</strong>
+
+        <mat-progress-bar
+          mode="determinate"
+          [value]="s.base_stat"
+          [bufferValue]="150"
+          class="flex-1 ml-2"
+        ></mat-progress-bar>
+
+        <span class="ml-2">{{ s.base_stat }}</span>
+      </div>
+      }
+
+      <h3 class="mt-5 font-bold">Moves</h3>
+      <mat-chip-listbox>
+        @for (m of pokemon.moves | slice:0:10; track $index) {
+        <mat-chip>
+          {{ m.move.name }}
+        </mat-chip>
+        }
+      </mat-chip-listbox>
+    </mat-card-content>
+  </mat-card>
+</div>
+}

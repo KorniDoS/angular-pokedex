@@ -1,0 +1,8 @@
+<div class="container">
+    <h1 class="mb-4">Wishlist</h1>
+  <app-generic-pokemon-list
+    [pokemons]="wishlist"
+    (remove)="removeFromWishlist($event)"
+    (move)="moveToCaught($event)"
+  ></app-generic-pokemon-list>
+</div>

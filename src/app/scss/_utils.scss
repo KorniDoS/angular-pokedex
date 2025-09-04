@@ -17,10 +17,61 @@ $huge: 6rem;
   flex-flow: column nowrap;
 }
 
+.u-bg-primary {
+  background-color: colors.$primary !important;
+}
+
+.u-bg-white {
+  background-color: colors.$white !important;
+}
+
+.u-bg-red {
+  background-color: red !important;
+}
+
+.u-white {
+  color: white !important;
+}
+
 .u-padding-medium {
   padding: $medium !important;
 }
 
+.u-margin-block-medium {
+  margin-block: $medium !important;
+}
+
 .min-100vh {
   min-height: 100vh !important;
+}
+
+.h-100vh {
+  height: 100vh !important;
+}
+
+.w-100 {
+  width: 100% !important;
+}
+
+.d-flex {
+  @include d-flex-center();
+}
+
+.d-flex-column {
+  @include d-flex-center-column();
+}
+
+.d-flex-space-between {
+  @include d-flex-center();
+  justify-content: space-between;
+}
+
+.u-text-center {
+  text-align: center !important;
+}
+
+.d-grid-autofill {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
 }

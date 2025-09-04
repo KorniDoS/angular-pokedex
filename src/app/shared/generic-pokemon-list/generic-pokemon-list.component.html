@@ -1,0 +1,34 @@
+<mat-card class="mb-4 u-bg-white">
+  <mat-card-content>
+    @if (pokemons.length) {
+    <div class="d-grid-autofill">
+      @for (pokemon of pokemons; track pokemon.id) {
+      <mat-card class="p-2 mb-4">
+        <img
+          [src]="
+            'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/' +
+            pokemon.id +
+            '.png'
+          "
+          [alt]="pokemon.name"
+        />
+
+        <strong class="u-text-center">{{ pokemon.name | titlecase }}</strong>
+
+        <div class="d-flex gap-2 mt-3">
+          <button mat-button class="u-bg-red u-white" (click)="removePokemon(pokemon.id)">
+            Remove
+          </button>
+
+          @if(showCatchButton){
+          <button matButton="filled" (click)="movePokemon(pokemon.id)">Catch</button>
+          }
+        </div>
+      </mat-card>
+      }
+    </div>
+    } @else {
+    <no-data></no-data>
+    }
+  </mat-card-content>
+</mat-card>

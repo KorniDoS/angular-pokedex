@@ -1,0 +1,18 @@
+.pokemon {
+
+
+    &-image {
+      width: 128px;
+      height: 128px;
+    }
+}
+
+mat-card {
+  max-width: 600px;
+  margin: auto;
+}
+
+mat-progress-bar {
+  height: 8px;
+  border-radius: 4px;
+}
